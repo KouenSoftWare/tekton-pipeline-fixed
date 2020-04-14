@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
@@ -20,6 +21,30 @@ spec:
   - name: targetURI
     value: http://el-pipeline-release-post-processing.tekton-pipelines.svc.cluster.local  # This has to be changed to a valid URL
 ---
+=======
+# apiVersion: tekton.dev/v1alpha1
+# kind: PipelineResource
+# metadata:
+#   name: tekton-pipelines-git
+# spec:
+#   type: git
+#   params:
+#   - name: url
+#     value: https://github.com/tektoncd/pipeline
+#   - name: revision
+#     value: vX.Y.Z-invalid-tags-boouuhhh  # REPLACE with the commit you want to release
+# ---
+# apiVersion: tekton.dev/v1alpha1
+# kind: PipelineResource
+# metadata:
+#   name: post-release-trigger
+# spec:
+#   type: cloudEvent
+#   params:
+#   - name: targetURI
+#     value: http://post-release-trigger-sink  # This has to be changed to a valid URL
+# ---
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:

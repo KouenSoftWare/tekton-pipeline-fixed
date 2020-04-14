@@ -54,6 +54,16 @@ spec:
     - --destination=$(inputs.params.imageRegistry)/$(inputs.params.pathToProject)/$(outputs.resources.builtBaseImage.url)
     - --context=/workspace/go/src/github.com/tektoncd/pipeline
 
+<<<<<<< HEAD
+=======
+    volumeMounts:
+      - name: gcp-secret
+        mountPath: /secret
+    env:
+      - name: GOOGLE_APPLICATION_CREDENTIALS
+        value: /secret/release.json
+
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
   - name: create-ko-yaml
     image: busybox
     script: |
@@ -104,6 +114,11 @@ spec:
       value: /workspace/go
     - name: GO111MODULE
       value: "off"
+<<<<<<< HEAD
+=======
+    - name: CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+      value: /secret/release.json
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
     script: |
       #!/usr/bin/env bash
       set -ex
@@ -136,6 +151,12 @@ spec:
 
       # Publish images and create release.yaml
       ko resolve --preserve-import-paths -t $(inputs.params.versionTag) -f /workspace/go/src/github.com/tektoncd/pipeline/config/ > /workspace/output/bucket/latest/release.yaml
+<<<<<<< HEAD
+=======
+    volumeMounts:
+      - name: gcp-secret
+        mountPath: /secret
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
 
   - name: copy-to-tagged-bucket
     image: busybox
@@ -146,7 +167,10 @@ spec:
 
       mkdir -p /workspace/output/bucket/previous/$(inputs.params.versionTag)/
       cp /workspace/output/bucket/latest/release.yaml /workspace/output/bucket/previous/$(inputs.params.versionTag)/release.yaml
+<<<<<<< HEAD
       cat /workspace/output/bucket/previous/$(inputs.params.versionTag)/release.yaml
+=======
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
 
   - name: tag-images
     image: google/cloud-sdk
@@ -170,7 +194,11 @@ spec:
       BUILT_IMAGES=( $(/workspace/go/src/github.com/tektoncd/pipeline/tekton/koparse/koparse.py --path /workspace/output/bucket/latest/release.yaml --base $(inputs.params.imageRegistry)/$(inputs.params.pathToProject) --images ${IMAGES[@]}) )
 
       # Auth with account credentials
+<<<<<<< HEAD
       # gcloud auth activate-service-account --key-file=/secret/release.json
+=======
+      gcloud auth activate-service-account --key-file=/secret/release.json
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
 
       # Tag the images and put them in all the regions
       for IMAGE in "${BUILT_IMAGES[@]}"
@@ -178,14 +206,33 @@ spec:
         IMAGE_WITHOUT_SHA=${IMAGE%%@*}
         IMAGE_WITHOUT_SHA_AND_TAG=${IMAGE_WITHOUT_SHA%%:*}
         IMAGE_WITH_SHA=${IMAGE_WITHOUT_SHA_AND_TAG}@${IMAGE##*@}
+<<<<<<< HEAD
         # gcloud -q container images add-tag ${IMAGE_WITH_SHA} ${IMAGE_WITHOUT_SHA_AND_TAG}:latest
         echo ${IMAGE_WITH_SHA} ${IMAGE_WITHOUT_SHA_AND_TAG}:latest
+=======
+        gcloud -q container images add-tag ${IMAGE_WITH_SHA} ${IMAGE_WITHOUT_SHA_AND_TAG}:latest
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
         for REGION in "${REGIONS[@]}"
         do
           for TAG in "latest" $(inputs.params.versionTag)
           do
+<<<<<<< HEAD
           # gcloud -q container images add-tag ${IMAGE_WITH_SHA} ${REGION}.${IMAGE_WITHOUT_SHA_AND_TAG}:$TAG
             echo ${IMAGE_WITH_SHA} ${REGION}.${IMAGE_WITHOUT_SHA_AND_TAG}:$TAG
           done
         done
       one
+=======
+            gcloud -q container images add-tag ${IMAGE_WITH_SHA} ${REGION}.${IMAGE_WITHOUT_SHA_AND_TAG}:$TAG
+          done
+        done
+      done
+    volumeMounts:
+      - name: gcp-secret
+        mountPath: /secret
+
+  volumes:
+    - name: gcp-secret
+      secret:
+        secretName: release-secret
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1

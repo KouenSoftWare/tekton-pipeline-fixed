@@ -19,7 +19,11 @@ metadata:
   labels:
     app.kubernetes.io/name: tekton-pipelines
     app.kubernetes.io/component: controller
+<<<<<<< HEAD
     tekton.dev/release: "0.10.2"
+=======
+    tekton.dev/release: "devel"
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
 spec:
   replicas: 1
   selector:
@@ -30,7 +34,11 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
         # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
+<<<<<<< HEAD
         tekton.dev/release: "0.10.2"
+=======
+        tekton.dev/release: "devel"
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
       labels:
         app: tekton-pipelines-controller
         app.kubernetes.io/name: tekton-pipelines
@@ -39,6 +47,7 @@ spec:
       serviceAccountName: tekton-pipelines-controller
       containers:
       - name: tekton-pipelines-controller
+<<<<<<< HEAD
         image: 85.195.72.237:32711/tekton/tekton-controller
         command: ["/go/bin/controller"]
         args: [
@@ -53,6 +62,21 @@ spec:
           "-pr-image", "85.195.72.237:32711/tekton/tekton-pullrequest-init",
         ]
         # "-build-gcs-fetcher-image", "github.com/tektoncd/pipeline/vendor/github.com/GoogleCloudPlatform/cloud-builders/gcs-fetcher/cmd/gcs-fetcher",
+=======
+        image: github.com/tektoncd/pipeline/cmd/controller
+        args: [
+          "-kubeconfig-writer-image", "github.com/tektoncd/pipeline/cmd/kubeconfigwriter",
+          "-creds-image", "github.com/tektoncd/pipeline/cmd/creds-init",
+          "-git-image", "github.com/tektoncd/pipeline/cmd/git-init",
+          "-nop-image", "tianon/true",
+          "-shell-image", "busybox",
+          "-gsutil-image", "google/cloud-sdk",
+          "-entrypoint-image", "github.com/tektoncd/pipeline/cmd/entrypoint",
+          "-imagedigest-exporter-image", "github.com/tektoncd/pipeline/cmd/imagedigestexporter",
+          "-pr-image", "github.com/tektoncd/pipeline/cmd/pullrequest-init",
+          "-build-gcs-fetcher-image", "github.com/tektoncd/pipeline/vendor/github.com/GoogleCloudPlatform/cloud-builders/gcs-fetcher/cmd/gcs-fetcher",
+        ]
+>>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
         volumeMounts:
         - name: config-logging
           mountPath: /etc/config-logging
