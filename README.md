@@ -1,9 +1,8 @@
 # 个性化修改内容
 - 修改流程并发任务中，其中一个任务失败会导致整个流程失败，从而使得平行的任务没有办法继续执行的问题: pkg/reconciler/pipelinerun/pipelinerun.go:462~469
-# ![pipe](./pipe.png) Tekton Pipelines
 
-[![Go Report Card](https://goreportcard.com/badge/tektoncd/pipeline)](https://goreportcard.com/report/tektoncd/pipeline)
 
+# Tekton
 The Tekton Pipelines project provides k8s-style resources for declaring
 CI/CD-style pipelines.
 
