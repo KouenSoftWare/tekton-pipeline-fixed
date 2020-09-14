@@ -382,7 +382,7 @@ func (trt *stepStateSorter) changeIndex(index int) {
 	// Check if the current index is equal to the desired index. If they are equal, do not swap; if they
 	// are not equal, swap index j with the desired index.
 	desiredIndex, exist := trt.mapForSort[trt.taskRunSteps[index].Name]
-	if exist && index != desiredIndex {
+	if exist && index != desiredIndex && trt.taskRunSteps.Len() > desiredIndex && trt.taskRunSteps.Len() > index{
 		trt.taskRunSteps[desiredIndex], trt.taskRunSteps[index] = trt.taskRunSteps[index], trt.taskRunSteps[desiredIndex]
 	}
 }
