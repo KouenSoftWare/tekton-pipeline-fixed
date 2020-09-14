@@ -54,41 +54,9 @@ spec:
             resource: bucket
           - name: source-to-release
             resource: source-repo
-<<<<<<< HEAD
     - name: build
       runAfter: [precheck]
       taskRef:
-=======
-    - name: lint
-      runAfter: [precheck]
-      taskRef:
-        name: golangci-lint
-      params:
-        - name: package
-          value: $(params.package)
-        - name: flags
-          value: -v
-        - name: version
-          value: v1.21
-      resources:
-        inputs:
-          - name: source
-            resource: source-repo
-    - name: unit-tests
-      runAfter: [lint]
-      taskRef:
-        name: golang-test
-      params:
-        - name: package
-          value: $(params.package)
-      resources:
-        inputs:
-          - name: source
-            resource: source-repo
-    - name: build
-      runAfter: [lint]
-      taskRef:
->>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
         name: golang-build
       params:
         - name: package
@@ -100,11 +68,7 @@ spec:
           - name: source
             resource: source-repo
     - name: publish-images
-<<<<<<< HEAD
       runAfter: [build]
-=======
-      runAfter: [build, unit-tests]
->>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
       taskRef:
         name: publish-tekton-pipelines
       params:
