@@ -40,7 +40,22 @@ spec:
   - name: notification
     type: cloudEvent
   tasks:
+    - name: precheck
+      taskRef:
+        name: prerelease-checks
+      params:
+        - name: package
+          value: $(params.package)
+        - name: versionTag
+          value: $(params.versionTag)
+      resources:
+        inputs:
+          - name: release-bucket
+            resource: bucket
+          - name: source-to-release
+            resource: source-repo
     - name: build
+      runAfter: [precheck]
       taskRef:
         name: golang-build
       params:

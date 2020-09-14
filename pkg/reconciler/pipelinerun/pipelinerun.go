@@ -460,20 +460,10 @@ func (c *Reconciler) reconcile(ctx context.Context, pr *v1alpha1.PipelineRun) er
 	before := pr.Status.GetCondition(apis.ConditionSucceeded)
 	after := resources.GetPipelineConditionStatus(pr, pipelineState, c.Logger, d)
     if after.Status == corev1.ConditionFalse && len(rprts) == 0 {
-<<<<<<< HEAD
 		pr.Status.SetCondition(after)
 	} else if after.Status != corev1.ConditionFalse {
 		pr.Status.SetCondition(after)
     }
-=======
-        pr.Status.SetCondition(after)
-    } else if after.Status != corev1.ConditionFalse {
-        pr.Status.SetCondition(after)
-    } else {
-		c.Logger.Infof("PipelineRun %s will be failed, but task not all finished, so waiting.", pr.Name)
-    }
-
->>>>>>> 29ea19fb4d7ed85125e965c084eecd06c38c33f1
 	reconciler.EmitEvent(c.Recorder, before, after, pr)
 
 	pr.Status.TaskRuns = getTaskRunsStatus(pr, pipelineState)
